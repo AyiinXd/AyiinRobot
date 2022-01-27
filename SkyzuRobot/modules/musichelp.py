@@ -7,7 +7,7 @@ from pyrogram import __version__ as pyrover
 from SkyzuRobot.events import register as MEMEK
 from SkyzuRobot import telethn as tbot
 
-PHOTO = "https://telegra.ph/file/d7b218eb5ae84d21cb5cb.jpg"
+PHOTO = "https://telegra.ph/file/21bca0a64032cd5b23b3c.jpg"
 
 @MEMEK(pattern=("/mhelp"))
 async def awake(event):
