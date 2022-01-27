@@ -1,5 +1,5 @@
 {
-      "name": "Kayzu Robot",
+      "name": "Ayiin Robot",
       "description": "A Powerful  Telegram group management bot with anime theme.",
       "keywords": [
          "telegram",
@@ -10,7 +10,7 @@
       ],
     
    "logo":    "https://telegra.ph/file/d7b218eb5ae84d21cb5cb.jpg",  
-   "repository": "https://github.com/Kayzyu/KayzuRobot",
+   "repository": "https://github.com/AyiinXd/AyiinRobot",
    "addons": [
           {
          "options": {
@@ -51,7 +51,7 @@
       "OWNER_ID": {
          "description": "Your user ID as an integer.",
          "required": true,
-         "value": "2088106582"
+         "value": "1905050903"
      },
 
       "STRING_SESSION": {
@@ -79,12 +79,12 @@
 
       "OWNER_USERNAME": {
          "description": "Your username without the @",
-         "value": "skyzu"
+         "value": "Contoldisini"
       },
       "SUPPORT_CHAT": {
          "description": "Your Telegram support group chat username where your users will go and bother you with shit But be like: MyGroupChatUsernameBlah. If this ever points to masha support than consider you made an enemy.",
          "required": true,
-         "value": "skyzusupport"
+         "value": "AyiinXdSpport"
       },
       "MONGO_DB_URI": {
          "description": "Required for database connections.",
@@ -102,7 +102,7 @@
      "EVENT_LOGS": {
          "description": "Event logs channel to note down important bot level events, recommend to make this public. ex: '-100'",
          "required": true,
-         "value": "-1001626554919"
+         "value": "-1001675396283"
       },
       "ERROR_LOGS": {
          "description": "error logs channel to note down important bot errors events, make this public/private. ex: '-100'",
@@ -112,7 +112,7 @@
       "JOIN_LOGGER": {
          "description": "A channel where bot will print who added it to what group, useful during debugging or spam handling.",
          "required": true,
-         "value": "-1001626554919"
+         "value": "-1001675396283"
       },      
       "CASH_API_KEY": {
          "description": "Required for currency converter. Get yours from https://www.alphavantage.co/support/#api-key",
