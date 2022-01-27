@@ -217,7 +217,7 @@ def start(update: Update, context: CallbackContext):
                         ],
                         [
                             InlineKeyboardButton(
-                                text=gs(chat.id, "add_bot_to_group_button"), url="t.me/KayzuMusicBot?startgroup=new"),
+                                text=gs(chat.id, "add_bot_to_group_button"), url="t.me/YinzRobot?startgroup=new"),
                         ]
                     ]
                 ),
@@ -390,7 +390,7 @@ def skyzu_about_callback(update, context):
                         InlineKeyboardButton(text="Credits", callback_data="skyzu_credit"),
                     ],
                     [
-                        InlineKeyboardButton(text=gs(chat.id, "source_button"), url="https://t.me/Kayzuuuuu"),
+                        InlineKeyboardButton(text=gs(chat.id, "source_button"), url="https://t.me/Contoldisini"),
                     ],
                     [
                     InlineKeyboardButton(text=gs(chat.id, "back_button"), callback_data="skyzu_back"),
@@ -417,7 +417,7 @@ def skyzu_about_callback(update, context):
                             InlineKeyboardButton(text=gs(chat.id, "inline_button"), switch_inline_query_current_chat=""),
                         ],
                         [
-                            InlineKeyboardButton(text=gs(chat.id, "add_bot_to_group_button"), url="t.me/KayzuMusicBot?startgroup=new"),
+                            InlineKeyboardButton(text=gs(chat.id, "add_bot_to_group_button"), url="t.me/YinzRobot?startgroup=new"),
                         ]
                     ]
                 ),
@@ -459,8 +459,8 @@ def skyzu_about_callback(update, context):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(text=gs(chat.id, "support_chat_link_button"), url="t.me/KayzuSupport"),
-                        InlineKeyboardButton(text=gs(chat.id, "updates_channel_link_button"), url="https://t.me/kayzuchannel"),
+                        InlineKeyboardButton(text=gs(chat.id, "support_chat_link_button"), url="t.me/AyiinXdSupport"),
+                        InlineKeyboardButton(text=gs(chat.id, "updates_channel_link_button"), url="https://t.me/AyiinSupport"),
                     ],
                     [
                         InlineKeyboardButton(text=gs(chat.id, "back_button"), callback_data="skyzu_"),
@@ -477,7 +477,7 @@ def skyzu_about_callback(update, context):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(text="KAYZU", url="https://github.com/Kayzyu"),
+                        InlineKeyboardButton(text="AyiinXd", url="https://github.com/AyiinXd"),
                     ],
                     [
                         InlineKeyboardButton(text="Paul Larsen", url="https://github.com/PaulSonOfLars"),
@@ -528,7 +528,7 @@ def Source_about_callback(update, context):
                             InlineKeyboardButton(text=gs(chat.id, "inline_button"), switch_inline_query_current_chat=""),
                         ],
                         [
-                            InlineKeyboardButton(text=gs(chat.id, "add_bot_to_group_button"), url="t.me/KayzuMusicBot?startgroup=new"),
+                            InlineKeyboardButton(text=gs(chat.id, "add_bot_to_group_button"), url="t.me/YinzRobot?startgroup=new"),
                         ]
                     ]
                 ),
