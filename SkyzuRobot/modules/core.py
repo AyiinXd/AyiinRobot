@@ -10,7 +10,7 @@ from SkyzuRobot import TEMP_DOWNLOAD_DIRECTORY as path
 from SkyzuRobot import TEMP_DOWNLOAD_DIRECTORY
 from datetime import datetime
 
-water = "./SkyzuRobot/resources/Kayzu.png"
+water = "./SkyzuRobot/resources/logo.jpg"
 client = tbot
 
 
