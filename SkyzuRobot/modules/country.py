@@ -101,7 +101,7 @@ Time Zones:- {tom}
 Top Level Domain:- {lanester}
 wikipedia:- {wiki}</b>
 
-Gathered By Kayzu Robot ⍟.</b>
+Gathered By Ayiin Robot ⍟.</b>
 """
 
     await borg.send_message(
