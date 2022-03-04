@@ -1,4 +1,4 @@
-name: Black
+name: AyiinRobot
 
 on: push
 
@@ -20,7 +20,7 @@ jobs:
           commit-message: Automated code formatting
           title: Format code.
           body: Automated code formatting.
-          labels: ⚫️ black
+          labels: Ayiinrobot
           branch: autofix
           committer: Skyzu <Skyzu@users.noreply.github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
