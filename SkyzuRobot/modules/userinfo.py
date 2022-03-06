@@ -12,13 +12,20 @@ from telethon.tl.functions.channels import GetFullChannelRequest
 from telethon.tl.types import ChannelParticipantsAdmins
 from telethon import events
 
-from telegram import MAX_MESSAGE_LENGTH, ParseMode, Update, MessageEntity, __version__ as ptbver, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import (
+    MAX_MESSAGE_LENGTH,
+    ParseMode,
+    Update,
+    MessageEntity,
+    __version__ as ptbver,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+)
 from telegram.ext import CallbackContext, CommandHandler
 from telegram.ext.dispatcher import run_async
 from telegram.error import BadRequest
 from telegram.utils.helpers import escape_markdown, mention_html
-from SkyzuRobot.modules.language import gs
-    
+
 from SkyzuRobot import (
     DEV_USERS,
     OWNER_ID,
@@ -43,6 +50,7 @@ from SkyzuRobot.modules.helper_funcs.chat_status import sudo_plus
 from SkyzuRobot.modules.helper_funcs.extraction import extract_user
 from SkyzuRobot import telethn
 
+
 def no_by_per(totalhp, percentage):
     """
     rtype: num of `percentage` from total
@@ -61,6 +69,7 @@ def get_percentage(totalhp, earnedhp):
     per_of_totalhp = 100 - matched_less * 100.0 / totalhp
     per_of_totalhp = str(int(per_of_totalhp))
     return per_of_totalhp
+
 
 def get_readable_time(seconds: int) -> str:
     count = 0
@@ -85,6 +94,7 @@ def get_readable_time(seconds: int) -> str:
     ping_time += ":".join(time_list)
 
     return ping_time
+
 
 def hpmanager(user):
     total_hp = (get_user_num_chats(user.id) + 10) * 10
@@ -138,48 +148,63 @@ def make_bar(per):
 def get_id(update: Update, context: CallbackContext):
     bot, args = context.bot, context.args
     message = update.effective_message
-    chat = update.effective_chat
-    msg = update.effective_message
-    user_id = extract_user(msg, args)
+    user_id = extract_user(message, args)
 
-    if user_id:
-
-        if msg.reply_to_message and msg.reply_to_message.forward_from:
-
+    if user_id and user_id != "error":
+        if message.reply_to_message and message.reply_to_message.forward_from:
             user1 = message.reply_to_message.from_user
             user2 = message.reply_to_message.forward_from
+            text = f"× {escape_markdown(user2.first_name)} id is <code>{user2.id}</code>.\n× {escape_markdown(user1.first_name)} id is <code>{user1.id}</code>."
 
-            msg.reply_text(
-                f"<b>Telegram ID:</b>\n"
-                f"• {html.escape(user2.first_name)} - <code>{user2.id}</code>.\n"
-                f"• {html.escape(user1.first_name)} - <code>{user1.id}</code>.",
+            if message.chat.type != "private":
+                text += f"\n× This group's id is <code>{message.chat.id}</code>."
+
+            send_message(message, text, parse_mode=ParseMode.HTML)
+        else:
+            user = bot.get_chat(user_id)
+            text = f"× {escape_markdown(user.first_name)} id is <code>{user.id}</code>."
+
+            if message.chat.type != "private":
+                text += f"\n× This group's id is <code>{message.chat.id}</code>."
+
+            send_message(message, text, parse_mode=ParseMode.HTML)
+
+    elif user_id == "error":
+        try:
+            user = bot.get_chat(args[0])
+        except BadRequest:
+            send_message(message, "Error: Unknown user/chat!")
+            return
+
+        text = f"× Your id is <code>{message.from_user.id}</code>."
+
+        text += f"\n× This group's id is <code>{user.id}</code>."
+
+        if message.chat.type != "private":
+            text += f"\n× This group's id is <code>{message.chat.id}</code>."
+
+        send_message(message, text, parse_mode=ParseMode.HTML)
+    else:
+        chat = update.effective_chat
+        if chat.type == "private":
+            send_message(
+                message,
+                f"Your id is <code>{message.from_user.id}</code>.",
                 parse_mode=ParseMode.HTML,
             )
 
         else:
-
-            user = bot.get_chat(user_id)
-            msg.reply_text(
-                f"{html.escape(user.first_name)}'s id is <code>{user.id}</code>.",
+            send_message(
+                message,
+                f"× Your id is <code>{message.from_user.id}</code>.\n× This group's id is <code>{chat.id}</code>.",
                 parse_mode=ParseMode.HTML,
             )
-
-    elif chat.type == "private":
-        msg.reply_text(
-            f"Your id is <code>{chat.id}</code>.",
-            parse_mode=ParseMode.HTML,
-        )
-
-    else:
-        msg.reply_text(
-            f"This group's id is <code>{chat.id}</code>.",
-            parse_mode=ParseMode.HTML,
-        )
 
 
 @telethn.on(
     events.NewMessage(
-        pattern="/ginfo ", from_users=(TIGERS or []) + (DRAGONS or []) + (DEMONS or []),
+        pattern="/ginfo ",
+        from_users=(TIGERS or []) + (DRAGONS or []) + (DEMONS or []),
     ),
 )
 async def group_info(event) -> None:
@@ -187,7 +212,8 @@ async def group_info(event) -> None:
     try:
         entity = await event.client.get_entity(chat)
         totallist = await event.client.get_participants(
-            entity, filter=ChannelParticipantsAdmins,
+            entity,
+            filter=ChannelParticipantsAdmins,
         )
         ch_full = await event.client(GetFullChannelRequest(channel=entity))
     except:
@@ -213,7 +239,6 @@ async def group_info(event) -> None:
         msg += f"\n• [{x.id}](tg://user?id={x.id})"
     msg += f"\n\n**Description**:\n`{ch_full.full_chat.about}`"
     await event.reply(msg)
-
 
 
 def gifid(update: Update, context: CallbackContext):
@@ -254,7 +279,7 @@ def info(update: Update, context: CallbackContext):
     else:
         return
 
-    rep = message.reply_text("<code>Getting info...</code>", parse_mode=ParseMode.HTML)
+    rep = message.reply_text("<code>Appraising...</code>", parse_mode=ParseMode.HTML)
 
     text = (
         f"╔═━「<b> Appraisal results:</b> 」\n"
@@ -319,8 +344,8 @@ def info(update: Update, context: CallbackContext):
         text += "\n\nThe Disaster level of this person is 'Soldier'."
         disaster_level_present = True
     elif user.id == 1829047705:
-         text += "\n\nOwner Of A Bot. Queen Of @excrybaby. Bot Name Inspired From 'JoJo'."
-         disaster_level_present = True
+        text += "\n\nOwner Of A Bot. Queen Of @skyzu. Bot Name Inspired From 'JoJo'."
+        disaster_level_present = True
 
     try:
         user_member = chat.get_member(user.id)
@@ -356,9 +381,11 @@ def info(update: Update, context: CallbackContext):
                     [
                         [
                             InlineKeyboardButton(
-                                "Health", url="https://t.me/KennedyProject/44"),
+                                "Health", url="https://t.me/ProjectSkyzu"
+                            ),
                             InlineKeyboardButton(
-                                "Disaster", url="https://t.me/KennedyProject/43")
+                                "Disaster", url="https://t.me/ProjectSkyzu"
+                            ),
                         ],
                     ]
                 ),
@@ -369,24 +396,27 @@ def info(update: Update, context: CallbackContext):
         # Incase user don't have profile pic, send normal text
         except IndexError:
             message.reply_text(
-                text, 
+                text,
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [
                             InlineKeyboardButton(
-                                "Health", url="https://t.me/KennedyProject/44"),
+                                "Health", url="https://t.me/ProjectSkyzu"
+                            ),
                             InlineKeyboardButton(
-                                "Disaster", url="https://t.me/KennedyProject/43")
+                                "Disaster", url="https://t.me/ProjectSkyzu"
+                            ),
                         ],
                     ]
                 ),
                 parse_mode=ParseMode.HTML,
-                disable_web_page_preview=True
+                disable_web_page_preview=True,
             )
 
     else:
         message.reply_text(
-            text, parse_mode=ParseMode.HTML,
+            text,
+            parse_mode=ParseMode.HTML,
         )
 
     rep.delete()
@@ -446,18 +476,19 @@ def set_about_me(update: Update, context: CallbackContext):
                 ),
             )
 
+
 @sudo_plus
 def stats(update: Update, context: CallbackContext):
-    stats = "<b>╔═━「 Current Yins Statistics 」</b>\n" + "\n".join([mod.__stats__() for mod in STATS])
+    stats = (
+        "❂ <b>Stats For <a href='https://t.me/SkyzuShiraishiBot'>Skyzu Shiraishi</a>:</b>\n"
+        + "\n".join([mod.__stats__() for mod in STATS])
+    )
     result = re.sub(r"(\d+)", r"<code>\1</code>", stats)
-    result += "\n<b>╘═━「 Powered By Yins 」</b>"
     update.effective_message.reply_text(
-        result,
-        parse_mode=ParseMode.HTML, 
-        disable_web_page_preview=True
-   )
-        
-        
+        result, parse_mode=ParseMode.HTML, disable_web_page_preview=True
+    )
+
+
 def about_bio(update: Update, context: CallbackContext):
     bot, args = context.bot, context.args
     message = update.effective_message
@@ -510,7 +541,8 @@ def set_about_bio(update: Update, context: CallbackContext):
 
         text = message.text
         bio = text.split(
-            None, 1,
+            None,
+            1,
         )  # use python's maxsplit to only remove the cmd, hence keeping newlines.
 
         if len(bio) == 2:
@@ -522,7 +554,8 @@ def set_about_bio(update: Update, context: CallbackContext):
             else:
                 message.reply_text(
                     "Bio needs to be under {} characters! You tried to set {}.".format(
-                        MAX_MESSAGE_LENGTH // 4, len(bio[1]),
+                        MAX_MESSAGE_LENGTH // 4,
+                        len(bio[1]),
                     ),
                 )
     else:
@@ -541,8 +574,39 @@ def __user_info__(user_id):
     return result
 
 
-def helps(chat):
-    return gs(chat, "info_and_afk_help")
+__help__ = """
+*ID:*
+❂ /id*:* get the current group id. If used by replying to a message, gets that user's id.
+❂ /gifid*:* reply to a gif to me to tell you its file ID.
+ 
+*Self addded information:* 
+❂ /setme <text>*:* will set your info
+❂ /me*:* will get your or another user's info.
+Examples:
+❂ /setme I am a wolf.
+❂ /me @username(defaults to yours if no user specified)
+ 
+*Information others add on you:* 
+❂ /bio*:* will get your or another user's bio. This cannot be set by yourself.
+❂ /setbio <text>*:* while replying, will save another user's bio 
+Examples:
+❂ /bio @username(defaults to yours if not specified).
+❂ /setbio This user is a wolf (reply to the user)
+ 
+*Overall Information about you:*
+❂ /info*:* get information about a user. 
+ 
+*json Detailed info:*
+❂ /json*:* Get Detailed info about any message.
+ 
+*AFk:*
+When marked as AFK, any mentions will be replied to with a message stating that you're not available!
+❂ /afk <reason>*:* Mark yourself as AFK.
+  - brb <reason>: Same as the afk command, but not a command. 
+  
+*What is that health thingy?*
+ Come and see [HP System explained](https://t.me/KennedyProject/44)
+"""
 
 SET_BIO_HANDLER = DisableAbleCommandHandler("setbio", set_about_bio, run_async=True)
 GET_BIO_HANDLER = DisableAbleCommandHandler("bio", about_bio, run_async=True)
