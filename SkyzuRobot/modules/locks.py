@@ -10,7 +10,7 @@ from telegram.ext import Filters
 from telegram.utils.helpers import mention_html
 
 import SkyzuRobot.modules.sql.locks_sql as sql
-from SkyzuRobot.modules.helper_funcs.decorators import skyzucmd, skyzumsg
+from SkyzuRobot.modules.helper_funcs.decorators import Skyzucmd, Skyzumsg
 from SkyzuRobot.modules.sql.approve_sql import is_approved
 from SkyzuRobot import DRAGONS, LOGGER as log, dispatcher
 from SkyzuRobot.modules.helper_funcs.chat_status import (
@@ -23,7 +23,6 @@ from SkyzuRobot.modules.helper_funcs.chat_status import (
 from SkyzuRobot.modules.log_channel import loggable
 from SkyzuRobot.modules.connection import connected
 from SkyzuRobot.modules.helper_funcs.alternate import send_message, typing_action
-from SkyzuRobot.modules.language import gs
 
 ad = AlphabetDetector()
 
@@ -130,7 +129,7 @@ def unrestr_members(
             pass
 
 
-@skyzucmd(command="locktypes")
+@Skyzucmd(command="locktypes")
 def locktypes(update, context):
     update.effective_message.reply_text(
         "\n • ".join(
@@ -140,7 +139,7 @@ def locktypes(update, context):
     )
 
 
-@skyzucmd(command="lock", pass_args=True)
+@Skyzucmd(command="lock", pass_args=True)
 @user_admin
 @loggable
 @typing_action
@@ -246,7 +245,7 @@ def lock(update, context) -> str:  # sourcery no-metrics
     return ""
 
 
-@skyzucmd(command="unlock", pass_args=True)
+@Skyzucmd(command="unlock", pass_args=True)
 @user_admin
 @loggable
 @typing_action
@@ -342,7 +341,7 @@ def unlock(update, context) -> str:  # sourcery no-metrics
     return ""
 
 
-@skyzumsg((Filters.all & Filters.chat_type.groups), group=PERM_GROUP)
+@Skyzumsg((Filters.all & Filters.chat_type.groups), group=PERM_GROUP)
 @user_not_admin
 def del_lockables(update, context):  # sourcery no-metrics
     chat = update.effective_chat  # type: Optional[Chat]
@@ -354,7 +353,7 @@ def del_lockables(update, context):  # sourcery no-metrics
         if lockable == "rtl":
             if sql.is_locked(chat.id, lockable) and can_delete(chat, context.bot.id):
                 if message.caption:
-                    check = ad.detect_alphabet(u"{}".format(message.caption))
+                    check = ad.detect_alphabet("{}".format(message.caption))
                     if "ARABIC" in check:
                         try:
                             message.delete()
@@ -363,7 +362,7 @@ def del_lockables(update, context):  # sourcery no-metrics
                                 log.exception("ERROR in lockables")
                         break
                 if message.text:
-                    check = ad.detect_alphabet(u"{}".format(message.text))
+                    check = ad.detect_alphabet("{}".format(message.text))
                     if "ARABIC" in check:
                         try:
                             message.delete()
@@ -479,7 +478,7 @@ def build_lock_message(chat_id):
     return res
 
 
-@skyzucmd(command="locks")
+@Skyzucmd(command="locks")
 @user_admin
 @typing_action
 def list_locks(update, context):
@@ -542,7 +541,29 @@ def __chat_settings__(chat_id, _):
     return build_lock_message(chat_id)
 
 
-def helps(chat):
-    return gs(chat, "locks_help")
+__help__ = """
+Do stickers annoy you? or want to avoid people sharing links? or pictures? \
+You're in the right place!
+The locks module allows you to lock away some common items in the \
+telegram world; the bot will automatically delete them!
+
+❂ /locktypes*:* Lists all possible locktypes
+
+*Admins only:*
+❂ /lock <type>*:* Lock items of a certain type (not available in private)
+❂ /unlock <type>*:* Unlock items of a certain type (not available in private)
+❂ /locks*:* The current list of locks in this chat.
+
+Locks can be used to restrict a group's users.
+eg:
+Locking urls will auto-delete all messages with urls, locking stickers will restrict all \
+non-admin users from sending stickers, etc.
+Locking bots will stop non-admins from adding bots to the chat.
+
+*Note:*
+❂ Unlocking permission *info* will allow members (non-admins) to change the group information, such as the description or the group name
+❂ Unlocking permission *pin* will allow members (non-admins) to pinned a message in a group
+"""
+
 
 __mod_name__ = "Locks"
