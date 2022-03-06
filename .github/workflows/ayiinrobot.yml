@@ -20,9 +20,9 @@ jobs:
           commit-message: Automated code formatting
           title: Format code.
           body: Automated code formatting.
-          labels: Ayiinrobot
+          labels: AyiinXd
           branch: autofix
-          committer: Skyzu <Skyzu@users.noreply.github.com>
+          committer: AyiinXd <AyiinXd@users.noreply.github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: true
           delete-branch: true
