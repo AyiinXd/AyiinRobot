@@ -35,16 +35,13 @@ def content(msg: Message) -> [None, str]:
 @capture_err
 async def bug(_, msg: Message):
     if msg.chat.username:
-        chat_username = (f"@{msg.chat.username} / `{msg.chat.id}`")
+        chat_username = f"@{msg.chat.username} / `{msg.chat.id}`"
     else:
-        chat_username = (f"Private Group / `{msg.chat.id}`")
+        chat_username = f"Private Group / `{msg.chat.id}`"
 
     bugs = content(msg)
     user_id = msg.from_user.id
-    mention = (
-        f"[{msg.from_user.first_name}](tg://user?id={str(msg.from_user.id)}"
-        + ")"
-    )
+    mention = f"[{msg.from_user.first_name}](tg://user?id={str(msg.from_user.id)}" + ")"
 
     datetimes_fmt = "%d-%m-%Y"
     datetimes = datetime.utcnow().strftime(datetimes_fmt)
@@ -56,7 +53,6 @@ async def bug(_, msg: Message):
 **Group : ** **{chat_username}**
 **Bug Report : ** **{bugs}**
 **Event Stamp : ** **{datetimes}**"""
-
 
     if msg.chat.type == "private":
         await msg.reply_text("✖ <b>This command only works in groups.</b>")
@@ -86,23 +82,19 @@ async def bug(_, msg: Message):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [InlineKeyboardButton("➡ ᴠɪᴇᴡ ʙᴜɢ", url=f"{msg.link}")],
-                    [
-                        InlineKeyboardButton(
-                            "ᴄʟᴏsᴇ", callback_data="close_send_photo"
-                        )
-                    ],
+                    [InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close_send_photo")],
                 ]
             ),
         )
 
     else:
         await msg.reply_text("✖ <b>No bug to Report!</b>")
-        
-    
+
 
 @Client.on_callback_query(filters.regex("close_reply"))
 async def close_reply(msg, CallbackQuery):
     await CallbackQuery.message.delete()
+
 
 @Client.on_callback_query(filters.regex("close_send_photo"))
 async def close_send_photo(Client, CallbackQuery):

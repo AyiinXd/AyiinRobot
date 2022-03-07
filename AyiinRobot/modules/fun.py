@@ -157,8 +157,7 @@ def shout(update: Update, context: CallbackContext):
     text = " ".join(args)
     result = [" ".join(list(text))]
     result.extend(
-        f'{symbol} ' + "  " * pos + symbol
-        for pos, symbol in enumerate(text[1:])
+        f"{symbol} " + "  " * pos + symbol for pos, symbol in enumerate(text[1:])
     )
 
     result = list("\n".join(result))
@@ -315,6 +314,7 @@ def weebify(update: Update, context: CallbackContext):
 
 def helps(chat):
     return gs(chat, "fun_help")
+
 
 SANITIZE_HANDLER = DisableAbleCommandHandler("sanitize", sanitize, run_async=True)
 RUNS_HANDLER = DisableAbleCommandHandler("runs", runs, run_async=True)

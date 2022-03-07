@@ -315,7 +315,8 @@ def reply_filter(update, context):
                             else:
                                 LOGGER.exception("Error in filters: " + excp.message)
                             return
-                    filtext = valid_format.format(
+                    filtext = (
+                        valid_format.format(
                             first=escape(message.from_user.first_name),
                             last=escape(
                                 message.from_user.last_name
@@ -341,9 +342,14 @@ def reply_filter(update, context):
                             if message.chat.type != "private"
                             else escape(message.from_user.first_name),
                             id=message.from_user.id,
-                        ) if (valid_format := escape_invalid_curly_brackets(
-                        text, VALID_WELCOME_FORMATTERS
-                    )) else ""
+                        )
+                        if (
+                            valid_format := escape_invalid_curly_brackets(
+                                text, VALID_WELCOME_FORMATTERS
+                            )
+                        )
+                        else ""
+                    )
                 else:
                     filtext = ""
 
@@ -465,7 +471,7 @@ def reply_filter(update, context):
                         )
 
             else:
-                    # LEGACY - all new filters will have has_markdown set to True.
+                # LEGACY - all new filters will have has_markdown set to True.
                 try:
                     send_message(update.effective_message, filt.reply)
                 except BadRequest as excp:
@@ -585,6 +591,7 @@ def __chat_settings__(chat_id, user_id):
 
 def helps(chat):
     return gs(chat, "filters_help")
+
 
 __mod_name__ = "Filters"
 

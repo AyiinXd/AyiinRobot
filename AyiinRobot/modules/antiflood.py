@@ -258,9 +258,13 @@ def flood(update, context):
 
     limit = sql.get_flood_limit(chat_id)
     if limit == 0:
-        text = msg.reply_text(
+        text = (
+            msg.reply_text(
                 "I'm not enforcing any flood control in {}!".format(chat_name),
-            ) if conn else msg.reply_text("I'm not enforcing any flood control here!")
+            )
+            if conn
+            else msg.reply_text("I'm not enforcing any flood control here!")
+        )
     elif conn:
         text = msg.reply_text(
             "I'm currently restricting members after {} consecutive messages in {}.".format(
@@ -393,8 +397,10 @@ def __chat_settings__(chat_id, user_id):
         return "Not enforcing to flood control."
     return "Antiflood has been set to`{}`.".format(limit)
 
+
 def helps(chat):
     return gs(chat, "antiflood_help")
+
 
 __mod_name__ = "Anti-Flood"
 
