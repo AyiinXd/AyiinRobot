@@ -778,9 +778,12 @@ def adminlist(update, context):
             name = "{}".format(
                 mention_html(
                     user.id,
-                    html.escape(user.first_name + " " + (user.last_name or "")),
-                ),
+                    html.escape(
+                        f'{user.first_name} ' + ((user.last_name or ""))
+                    ),
+                )
             )
+
 
         if user.is_bot:
             administrators.remove(admin)
@@ -811,17 +814,18 @@ def adminlist(update, context):
             name = "{}".format(
                 mention_html(
                     user.id,
-                    html.escape(user.first_name + " " + (user.last_name or "")),
-                ),
+                    html.escape(
+                        f'{user.first_name} ' + ((user.last_name or ""))
+                    ),
+                )
             )
-        # if user.username:
-        #    name = escape_markdown("@" + user.username)
+
         if status == "administrator":
             if custom_title:
                 try:
                     custom_admin_list[custom_title].append(name)
                 except KeyError:
-                    custom_admin_list.update({custom_title: [name]})
+                    custom_admin_list[custom_title] = [name]
             else:
                 normal_admin_list.append(name)
 
@@ -856,8 +860,7 @@ def button(update: Update, context: CallbackContext) -> str:
     query: Optional[CallbackQuery] = update.callback_query
     user: Optional[User] = update.effective_user
     bot: Optional[Bot] = context.bot
-    match = re.match(r"demote_\((.+?)\)", query.data)
-    if match:
+    if match := re.match(r"demote_\((.+?)\)", query.data):
         user_id = match.group(1)
         chat: Optional[Chat] = update.effective_chat
         member = chat.get_member(user_id)
@@ -874,7 +877,7 @@ def button(update: Update, context: CallbackContext) -> str:
             can_restrict_members=bot_member.can_restrict_members,
             can_pin_messages=bot_member.can_pin_messages,
             can_manage_voice_chats=bot_member.can_manage_voice_chats,
-        )                
+        )
         demoted = bot.promoteChatMember(
                       chat.id,
                       user_id,
