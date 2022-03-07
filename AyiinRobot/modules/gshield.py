@@ -190,9 +190,7 @@ async def profanity(event):
             chats = globalchat.find({})
             for c in chats:
                 if event.chat_id == c["id"]:
-                    await event.reply(
-                        "Global mode is already activated for this chat."
-                    )
+                    await event.reply("Global mode is already activated for this chat.")
                     return
             globalchat.insert_one({"id": event.chat_id})
             await event.reply("Global mode turned on for this chat.")
@@ -299,7 +297,9 @@ async def del_profanity(event):
                 await event.delete()
                 st = sender.first_name
                 hh = sender.id
-                final = f"[{st}](tg://user?id={hh}) you should only speak in english here !"
+                final = (
+                    f"[{st}](tg://user?id={hh}) you should only speak in english here !"
+                )
                 dev = await event.respond(final)
                 await asyncio.sleep(10)
                 await dev.delete()

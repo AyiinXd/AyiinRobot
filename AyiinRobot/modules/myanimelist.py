@@ -109,7 +109,7 @@ def character(update: Update, context: CallbackContext):
         kanji = res.get("name_kanji")
         about = res.get("about")
         if len(about) > 4096:
-            about = f'{about[:4000]}...'
+            about = f"{about[:4000]}..."
         image = res.get("image_url")
         url = res.get("url")
         rep = f"<b>{name} ({kanji})</b>\n\n"

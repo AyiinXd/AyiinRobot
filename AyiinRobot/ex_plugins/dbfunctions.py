@@ -741,11 +741,14 @@ async def get_rss_feeds() -> list:
     feeds = await feeds.to_list(length=10000000)
     if not feeds:
         return
-    return [dict(
-                chat_id=feed["chat_id"],
-                url=feed["url"],
-                last_title=feed["last_title"],
-            ) for feed in feeds]
+    return [
+        dict(
+            chat_id=feed["chat_id"],
+            url=feed["url"],
+            last_title=feed["last_title"],
+        )
+        for feed in feeds
+    ]
 
 
 async def get_rss_feeds_count() -> int:
