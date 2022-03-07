@@ -23,12 +23,11 @@ def content(msg: Message) -> [None, str]:
 
     if msg.text is None:
         return None
-    if " " in text_to_return:
-        try:
-            return msg.text.split(None, 1)[1]
-        except IndexError:
-            return None
-    else:
+    if " " not in text_to_return:
+        return None
+    try:
+        return msg.text.split(None, 1)[1]
+    except IndexError:
         return None
 
 
@@ -42,12 +41,14 @@ async def bug(_, msg: Message):
 
     bugs = content(msg)
     user_id = msg.from_user.id
-    mention = "["+msg.from_user.first_name+"](tg://user?id="+str(msg.from_user.id)+")"
+    mention = (
+        f"[{msg.from_user.first_name}](tg://user?id={str(msg.from_user.id)}"
+        + ")"
+    )
+
     datetimes_fmt = "%d-%m-%Y"
     datetimes = datetime.utcnow().strftime(datetimes_fmt)
 
-    thumb = "https://telegra.ph/file/21bca0a64032cd5b23b3c.jpg"
-    
     bug_report = f"""
 **#BUG : ** **[Master](https://t.me/Kayzuuuuu)**
 **From User : ** **{mention}**
@@ -56,56 +57,46 @@ async def bug(_, msg: Message):
 **Bug Report : ** **{bugs}**
 **Event Stamp : ** **{datetimes}**"""
 
-    
+
     if msg.chat.type == "private":
         await msg.reply_text("✖ <b>This command only works in groups.</b>")
         return
 
     if user_id == owner:
         if bugs:
-            await msg.reply_text(
-                f"✖ <b>How can be owner bot reporting bug idiot??</b>",
-            )
+            await msg.reply_text("✖ <b>How can be owner bot reporting bug idiot??</b>")
             return
         else:
-            await msg.reply_text(
-                f"✖ <b>Owner noob!</b>",
-            )
-    elif user_id != owner:
-        if bugs:
-            await msg.reply_text(
-                f"<b>Bug Report : {bugs}</b>\n\n"
-                "✔ <b>The bug was successfully reported to the support group!</b>",
-                reply_markup=InlineKeyboardMarkup(
+            await msg.reply_text("✖ <b>Owner noob!</b>")
+    elif bugs:
+        await msg.reply_text(
+            f"<b>Bug Report : {bugs}</b>\n\n"
+            "✔ <b>The bug was successfully reported to the support group!</b>",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close_reply")]]
+            ),
+        )
+
+        thumb = "https://telegra.ph/file/21bca0a64032cd5b23b3c.jpg"
+
+        await Client.send_photo(
+            log,
+            photo=thumb,
+            caption=f"{bug_report}",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("➡ ᴠɪᴇᴡ ʙᴜɢ", url=f"{msg.link}")],
                     [
-                        [
-                            InlineKeyboardButton(
-                                "ᴄʟᴏsᴇ", callback_data=f"close_reply")
-                        ]
-                    ]
-                )
-            )
-            await Client.send_photo(
-                log,
-                photo=thumb,
-                caption=f"{bug_report}",
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton(
-                                "➡ ᴠɪᴇᴡ ʙᴜɢ", url=f"{msg.link}")
-                        ],
-                        [
-                            InlineKeyboardButton(
-                                "ᴄʟᴏsᴇ", callback_data=f"close_send_photo")
-                        ]
-                    ]
-                )
-            )
-        else:
-            await msg.reply_text(
-                f"✖ <b>No bug to Report!</b>",
-            )
+                        InlineKeyboardButton(
+                            "ᴄʟᴏsᴇ", callback_data="close_send_photo"
+                        )
+                    ],
+                ]
+            ),
+        )
+
+    else:
+        await msg.reply_text("✖ <b>No bug to Report!</b>")
         
     
 
