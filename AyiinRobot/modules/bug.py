@@ -43,13 +43,13 @@ async def bug(_, msg: Message):
     bugs = content(msg)
     user_id = msg.from_user.id
     mention = "["+msg.from_user.first_name+"](tg://user?id="+str(msg.from_user.id)+")"
-    datetimes_fmt = "%d-%m-%Y"
+    datetimes_fmt = "%d - %B - %Y"
     datetimes = datetime.utcnow().strftime(datetimes_fmt)
 
     thumb = "https://telegra.ph/file/21bca0a64032cd5b23b3c.jpg"
     
     bug_report = f"""
-**#BUG : ** **[Master](https://t.me/Kayzuuuuu)**
+**#BUG : ** **[Master](https://t.me/AyiinXd)**
 **From User : ** **{mention}**
 **User ID : ** **{user_id}**
 **Group : ** **{chat_username}**
