@@ -18,29 +18,29 @@ def staff(client: Client, message: Message):
         if x.status == "administrator" and x.can_promote_members and x.title:
             title = escape(x.title)
             co_founder.append(
-                f" <b>├</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a> <i>- {title}</i>"
+                f" <b>𖣘</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a> <i>- {title}</i>"
             )
         elif x.status == "administrator" and x.can_promote_members and not x.title:
             co_founder.append(
-                f" <b>├</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a>"
+                f" <b>𖣘</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a>"
             )
         elif x.status == "administrator" and not x.can_promote_members and x.title:
             title = escape(x.title)
             admin.append(
-                f" <b>├</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a> <i>- {title}</i>"
+                f" <b>⍟</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a> <i>- {title}</i>"
             )
         elif x.status == "administrator" and not x.can_promote_members and not x.title:
             admin.append(
-                f" <b>├</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a>"
+                f" <b>⍟</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a>"
             )
         elif x.status == "creator" and x.title:
             title = escape(x.title)
             creator.append(
-                f" <b>└</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a> <i>- {title}</i>"
+                f" <b>♕︎</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a> <i>- {title}</i>"
             )
         elif x.status == "creator" and not x.title:
             creator.append(
-                f" <b>└</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a>"
+                f" <b>♕︎</b> <a href='tg://user?id={x.user.id}'>{x.user.first_name}</a>"
             )
 
     if len(co_founder) == 0 and len(admin) == 0:
